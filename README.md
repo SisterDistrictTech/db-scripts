@@ -10,3 +10,5 @@ These are the setup scripts required to fill data into the internal database.
 * Installation instructions
 
 * How to run it?
+
+* Troubleshooting tips
