@@ -1,8 +1,8 @@
-drop database SisterDistrict;
+drop database SisterDistrict_dev;
 
-create database SisterDistrict;
+create database SisterDistrict_dev;
 
-use SisterDistrict;
+use SisterDistrict_dev;
 
 CREATE TABLE national_districts
 	(id int(11) NOT NULL auto_increment primary key,
