@@ -1,4 +1,4 @@
-drop database SisterDistrict_dev;
+drop database IF EXISTS SisterDistrict_dev;
 
 create database SisterDistrict_dev;
 
@@ -148,7 +148,7 @@ create table race_expenditures
     amount float,
     date_modified timestamp not null default current_timestamp(),
     user_modified varchar(20) not null,
-    expenditure_date timestamp,
+    expenditure_date date,
     exp_position text,
     committee text,
     payee text,
