@@ -1,8 +1,11 @@
-drop database SisterDistrict_dev;
+#drop database SisterDistrict_dev;
+drop database SisterDistrict;
 
-create database SisterDistrict_dev;
+#create database SisterDistrict_dev;
+create database SisterDistrict;
 
-use SisterDistrict_dev;
+#use SisterDistrict_dev;
+use SisterDistrict;
 
 CREATE TABLE national_districts
 	(id int(11) NOT NULL auto_increment primary key,
@@ -148,7 +151,7 @@ create table race_expenditures
     amount float,
     date_modified timestamp not null default current_timestamp(),
     user_modified varchar(20) not null,
-    expenditure_date timestamp,
+    expenditure_date date,
     exp_position text,
     committee text,
     payee text,
