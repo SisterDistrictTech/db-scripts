@@ -19,5 +19,5 @@ for state in states:
     districts = list(state_districts[state])
     districts.sort()
     for district in districts:
-        print('INSERT INTO national_districts (id, state, district, district_abbr, date_modified, user_modified) VALUES ({0}, \'{1}\', {2}, \'{1}-{2}\', NOW(), SUBSTRING_INDEX(CURRENT_USER(), \'@\', 1));'.format(id, state, district))
+        print('INSERT INTO national_districts (id, state, district, district_abbr) VALUES ({0}, \'{1}\', {2}, \'{1}-{2}\');'.format(id, state, district))
         id += 1
