@@ -1,8 +1,11 @@
 drop database SisterDistrict_dev;
+#drop database SisterDistrict;
 
 create database SisterDistrict_dev;
+#create database SisterDistrict;
 
 use SisterDistrict_dev;
+#use SisterDistrict;
 
 CREATE TABLE national_districts
 	(id int(11) NOT NULL auto_increment primary key,
@@ -76,6 +79,7 @@ create table national_district_races
 	sw_margin float,
 	sw_total_votes int(11),
 	sl_swing_index int(2),
+    rnc_targeted bool,
     foreign key fk_district_id(district_id) references national_districts(id));
     
 DELIMITER ;;
