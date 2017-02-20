@@ -1,4 +1,5 @@
-drop database SisterDistrict_dev;
+SET SQL_MODE='ALLOW_INVALID_DATES';
+drop database if exists SisterDistrict_dev;
 
 create database SisterDistrict_dev;
 
