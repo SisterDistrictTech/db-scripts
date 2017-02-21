@@ -33,3 +33,12 @@ python3 voting_rights/voting_rights.py
 
 mysql -u root SisterDistrict_dev < voting_rights/voting_rights.sql
 ```
+
+### voting_rights/voting_rights.py
+Inserts the results of the last 10 presidential elections.
+
+**Usage:**
+
+```
+mysql -u root SisterDistrict_dev < pres_races/pres_races.sql
+```
