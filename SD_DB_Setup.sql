@@ -1,4 +1,4 @@
-drop database SisterDistrict_dev;
+drop database if exists SisterDistrict_dev;
 
 create database SisterDistrict_dev;
 
