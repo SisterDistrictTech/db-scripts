@@ -1,8 +1,11 @@
-drop database IF EXISTS SisterDistrict_dev;
+drop database if exists SisterDistrict_dev;
+#drop database if exists SisterDistrict;
 
 create database SisterDistrict_dev;
+#create database SisterDistrict;
 
 use SisterDistrict_dev;
+#use SisterDistrict;
 
 CREATE TABLE national_districts
 	(id int(11) NOT NULL auto_increment primary key,
@@ -76,6 +79,7 @@ create table national_district_races
 	sw_margin float,
 	sw_total_votes int(11),
 	sl_swing_index int(2),
+    rnc_targeted bool,
     foreign key fk_district_id(district_id) references national_districts(id));
     
 DELIMITER ;;
@@ -148,7 +152,7 @@ create table race_expenditures
     amount float,
     date_modified timestamp not null default current_timestamp(),
     user_modified varchar(20) not null,
-    expenditure_date timestamp null default null,
+    expenditure_date date,
     exp_position text,
     committee text,
     payee text,
@@ -422,7 +426,7 @@ create table voting_rights
     voting_notes text,
     pending_leg text,
     date_modified timestamp not null default current_timestamp(),
-    user_modified varchar(20) not null);
+    user_modified varchar(20) default null);
     
 DELIMITER ;;
 CREATE TRIGGER voting_rights_insert BEFORE INSERT ON voting_rights FOR EACH ROW

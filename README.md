@@ -9,13 +9,47 @@ To create a dev copy of the database SisterDistrict_dev run the following comman
 Swapping out the root use if you have a different super user.
 
 ## Main scripts
-### sample.py
-* What does it do?
 
-* Pre-requisites
+### Main database setup
 
-* Installation instructions
+```
+mysql -u root < SD_DB_Setup.sql
+```
 
-* How to run it?
+
 
 * Troubleshooting tips
+=======
+### national_districts.py
+Parses current legislator data from https://github.com/unitedstates/congress-legislators/blob/master/legislators-current.yaml into federal districts and outputs them as MySQL inserts for the national_districts table with deterministic ids.
+
+**Usage:**
+
+```
+pip3 install -r requirments.txt
+
+python3 national_districts.py > national_districts.sql
+
+mysql -u root SisterDistrict_dev < national_districts.sql
+```
+
+### voting_rights/voting_rights.py
+Parses our compilation of voting laws from voting_rights/voting_rights_2016.csv and outputs SQL file voting_rights/voting_rights.sql which can be executed to truncate and repopulate the voting_rights MySQL table.
+
+**Usage (from db-scripts directory):**
+
+```
+python3 voting_rights/voting_rights.py
+
+mysql -u root SisterDistrict_dev < voting_rights/voting_rights.sql
+```
+
+### voting_rights/voting_rights.py
+Inserts the results of the last 10 presidential elections.
+
+**Usage:**
+
+```
+mysql -u root SisterDistrict_dev < pres_races/pres_races.sql
+```
+
