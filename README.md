@@ -1,6 +1,13 @@
 # db-scripts
 These are the setup scripts required to fill data into the internal database.
 
+## Dev Setup
+To create a dev copy of the database SisterDistrict_dev run the following command in your local environment.
+
+> mysql -u root -p < SD_DB_Setup.sql
+
+Swapping out the root use if you have a different super user.
+
 ## Main scripts
 
 ### Main database setup
@@ -10,6 +17,9 @@ mysql -u root < SD_DB_Setup.sql
 ```
 
 
+
+* Troubleshooting tips
+=======
 ### national_districts.py
 Parses current legislator data from https://github.com/unitedstates/congress-legislators/blob/master/legislators-current.yaml into federal districts and outputs them as MySQL inserts for the national_districts table with deterministic ids.
 
@@ -42,3 +52,4 @@ Inserts the results of the last 10 presidential elections.
 ```
 mysql -u root SisterDistrict_dev < pres_races/pres_races.sql
 ```
+
