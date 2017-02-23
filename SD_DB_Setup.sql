@@ -1,5 +1,6 @@
-drop database SisterDistrict_dev;
-#drop database SisterDistrict;
+
+drop database if exists SisterDistrict_dev;
+#drop database if exists SisterDistrict;
 
 create database SisterDistrict_dev;
 #create database SisterDistrict;
@@ -426,7 +427,7 @@ create table voting_rights
     voting_notes text,
     pending_leg text,
     date_modified timestamp not null default current_timestamp(),
-    user_modified varchar(20) not null);
+    user_modified varchar(20) default null);
     
 DELIMITER ;;
 CREATE TRIGGER voting_rights_insert BEFORE INSERT ON voting_rights FOR EACH ROW
