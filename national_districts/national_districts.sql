@@ -1,6 +1,3 @@
-use SisterDistrict_dev;
-#use SisterDistrict;
-
 INSERT INTO national_districts (id, state, district, district_abbr) VALUES (1, 'AK', 0, 'AK-0');
 INSERT INTO national_districts (id, state, district, district_abbr) VALUES (2, 'AL', 1, 'AL-1');
 INSERT INTO national_districts (id, state, district, district_abbr) VALUES (3, 'AL', 2, 'AL-2');

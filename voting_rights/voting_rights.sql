@@ -1,4 +1,3 @@
-USE sisterdistrict_dev;
 TRUNCATE TABLE voting_rights;
 INSERT INTO voting_rights (state,data_year,voter_id_law,type_of_law,forms_of_id,voting_notes,pending_leg) VALUES ("AL","2016","1","Non-strict photo ID, absentee voters are required to provide ID","Requires ID or specific documentation at the DMV or Sec State office, Board of Registrars office or \"mobile location\"","Provisional ballot, but must return by 5pm Friday with a valid ID; two officials can sign an affadavit to vouch for you.","");
 INSERT INTO voting_rights (state,data_year,voter_id_law,type_of_law,forms_of_id,voting_notes,pending_leg) VALUES ("AK","2016","1","Non-strict non-photo ID, non-first time voters do not have to provide ID to vote by mail","","Yes on a \"Questioned Ballot\".","AK HB 1 - Introduced by Democrat, it's okay");

@@ -1,4 +1,3 @@
-USE sisterdistrict_dev;
 DELETE FROM pres_races;
 INSERT INTO pres_races (race_year,dem_candidate,rep_candidate,winning_party) VALUES (2016,"Hillary Clinton","Donald Trump","R");
 INSERT INTO pres_races (race_year,dem_candidate,rep_candidate,winning_party) VALUES (2012,"Barack Obama","Mitt Romney","D");
