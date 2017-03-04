@@ -1,15 +1,20 @@
 import argparse
-import csv
+import gspread
 import MySQLdb
+import oauth2client
+import re
 import subprocess
 import urllib.request
 import yaml
 
 from collections import defaultdict
+from oauth2client.service_account import ServiceAccountCredentials
 
 LEGISLATORS_URL = 'https://raw.githubusercontent.com/unitedstates/congress-legislators/master/legislators-current.yaml'
+VOTING_RIGHTS_SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/1jJs9h9ljSwp2VndX4lKztUBe3p4F6sGJV6TRrKSZuck/edit#gid=1538272940'
+VOTING_RIGHTS_EXPORT_WORKSHEET_NAME = 'Voter ID For Export'
 
-def main(dbname, dbuser, dbpasswd):
+def main(dbname, dbuser, dbpasswd, googcreds):
     mysqladmin = ['mysqladmin', '-u', dbuser, '-p'+dbpasswd]
 
     subprocess.run(mysqladmin + ['-f', 'drop', dbname])
@@ -18,7 +23,10 @@ def main(dbname, dbuser, dbpasswd):
         subprocess.run(['mysql', '-u', dbuser, '-p'+dbpasswd, dbname], stdin=sql, check=True)
 
     ndtuples = get_ndtuples()
-    vrheader, vrtuples = get_vrdata()
+    vrheader, vrtuples = get_vrdata(googcreds)
+
+    if any(re.search(r'\W', colname) for colname in vrheader):
+        raise 'Illegal SQL column name found among %r' % vrheader
 
     db = MySQLdb.connect(db=dbname, user=dbuser, passwd=dbpasswd, charset='utf8')
     cur = db.cursor()
@@ -76,21 +84,25 @@ def get_ndtuples():
     return ndtuples
 
 
-def get_vrdata():
-    # TODO: read the values directly from the spreadsheet at
-    # https://docs.google.com/spreadsheets/d/1jJs9h9ljSwp2VndX4lKztUBe3p4F6sGJV6TRrKSZuck/edit#gid=1538272940
-    with open('voting_rights/voting_rights_2016.csv') as v:
-        vr = csv.reader(v)
-        header = next(vr)
-        tuples = [row for row in vr]
-
-    return header, tuples
+def get_vrdata(googcreds):
+    creds = ServiceAccountCredentials.from_json_keyfile_name(googcreds,
+                                                             ['https://spreadsheets.google.com/feeds'])
+    client = gspread.authorize(creds)
+    ss = client.open_by_url(VOTING_RIGHTS_SPREADSHEET_URL)
+    s = ss.worksheet(VOTING_RIGHTS_EXPORT_WORKSHEET_NAME)
+    all_values = s.get_all_values()
+    return all_values[0], all_values[1:]
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dbname', default='SisterDistrict_dev')
-    parser.add_argument('--dbuser', default='root')
-    parser.add_argument('--dbpasswd')
+    parser.add_argument('--dbname', default='SisterDistrict_dev',
+                        help='Name for the MySQL database')
+    parser.add_argument('--dbuser', default='root',
+                        help='MySQL username')
+    parser.add_argument('--dbpasswd',
+                        help='MySQL password for the MySQL user')
+    parser.add_argument('--googcreds',
+                        help='Path to JSON file containing Google service-account credentials.')
     args = parser.parse_args()
-    main(args.dbname, args.dbuser, args.dbpasswd)
+    main(args.dbname, args.dbuser, args.dbpasswd, args.googcreds)
