@@ -1,9 +1,10 @@
+import sys
 import yaml
 
 # TODO: read the latest legislators-current.yaml from
 # https://raw.githubusercontent.com/unitedstates/congress-legislators/master/legislators-current.yaml
 
-data = yaml.load(open('legislators-current.yaml', 'r'))
+data = yaml.load(sys.stdin)
 
 state_districts = {}
 
