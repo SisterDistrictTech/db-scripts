@@ -10,6 +10,8 @@ pip3 install -r requirements.txt
 
 # DB setup
 
+You’ll need a MySQL installation. Follow installation and setup instructions for your platform, or seek help on [the data_team Slack channel](https://sisterdistrict.slack.com/messages/data_team). For security, be sure the password for your MySQL user is non-empty.
+
 To set up the Sister District database, run the following command:
 
 ```
