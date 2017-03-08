@@ -2,15 +2,17 @@
 
 class PresRaces:
     @staticmethod
-    def setup(cur):
+    def populate(cur, reset=False):
         """
-        Initial setup of the pres_races table.
-        WARNING: destroys any data present in pres_races.
+        Load data into the pres_races table.
 
         Args:
-          cur - a database cursor
+          cur: a database cursor
+          reset: whether to empty the table before populating it (warning!)
         """
-        cur.execute('DELETE FROM pres_races')
+        if reset:
+            cur.execute('DELETE FROM pres_races')
+
         sql = ('INSERT INTO pres_races ' +
                ' (race_year, dem_candidate, rep_candidate, winning_party) ' +
                ' VALUES (%s, %s, %s, %s)')

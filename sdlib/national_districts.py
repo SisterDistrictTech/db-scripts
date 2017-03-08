@@ -9,13 +9,13 @@ LEGISLATORS_URL = 'https://raw.githubusercontent.com/unitedstates/congress-legis
 
 class NationalDistricts:
     @staticmethod
-    def setup(cur):
+    def populate(cur, reset=False):
         """
-        Initial setup of the national_districts table.
-        WARNING: destroys any data present in national_districts.
+        Load data into the national_districts table.
 
         Args:
-          cur - a database cursor
+          cur: a database cursor
+          reset: whether to empty the table before populating it (warning!)
         """
         with urllib.request.urlopen(LEGISLATORS_URL) as l:
             legislators = yaml.load(l)
@@ -33,9 +33,15 @@ class NationalDistricts:
             districts = state_districts[state]
             districts.sort()
             for district in districts:
-                ndtuples.append((1 + len(ndtuples), state, district, '%s-%s' % (state, district)))
+                # Don't let MySQL assign AUTO_INCREMENT ids to the
+                # rows, because we want them to start at 1
+                id = 1 + len(ndtuples)
+                district_abbr = '%s-%s' % (state, district)
+                ndtuples.append((id, state, district, district_abbr))
 
-        cur.execute('DELETE FROM national_districts')
+        if reset:
+            cur.execute('DELETE FROM national_districts')
+
         sql = ('INSERT INTO national_districts ' +
            ' (id, state, district, district_abbr) ' +
            ' VALUES (%s, %s, %s, %s)')
