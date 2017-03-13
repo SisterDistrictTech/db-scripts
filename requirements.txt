@@ -1,0 +1,4 @@
+gspread
+mysqlclient
+oauth2client
+PyYAML >= 3.12

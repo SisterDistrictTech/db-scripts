@@ -1,55 +1,23 @@
-# db-scripts
-These are the setup scripts required to fill data into the internal database.
+# Environment setup
 
-## Dev Setup
-To create a dev copy of the database SisterDistrict_dev run the following command in your local environment.
-
-> mysql -u root -p < SD_DB_Setup.sql
-
-Swapping out the root use if you have a different super user.
-
-## Main scripts
-
-### Main database setup
+You’ll need a Linux or Linux-like system with Python3 and the MySQL
+server installed. To ensure you have the necessary Python modules for
+the following steps, run this command:
 
 ```
-mysql -u root < SD_DB_Setup.sql
+pip3 install -r requirements.txt
 ```
 
+# DB setup
 
+You’ll need a MySQL installation. Follow installation and setup instructions for your platform, or seek help on [the data_team Slack channel](https://sisterdistrict.slack.com/messages/data_team). For security, be sure the password for your MySQL user is non-empty.
 
-* Troubleshooting tips
-=======
-### national_districts.py
-Parses current legislator data from https://github.com/unitedstates/congress-legislators/blob/master/legislators-current.yaml into federal districts and outputs them as MySQL inserts for the national_districts table with deterministic ids.
-
-**Usage:**
+To set up the Sister District database, run the following command:
 
 ```
-pip3 install -r requirments.txt
-
-python3 national_districts.py > national_districts.sql
-
-mysql -u root SisterDistrict_dev < national_districts.sql
+python3 setupdb.py --dbname DBNAME --dbuser USER --dbpasswd PASSWD --googcreds CREDS
 ```
 
-### voting_rights/voting_rights.py
-Parses our compilation of voting laws from voting_rights/voting_rights_2016.csv and outputs SQL file voting_rights/voting_rights.sql which can be executed to truncate and repopulate the voting_rights MySQL table.
+where DBNAME is the MySQL database name (default `SisterDistrict_dev`), USER is the MySQL user (default `root`), PASSWD is the user’s MySQL password, and CREDS is the path to a JSON file containing the Google service-account credentials (for accessing spreadsheets in the cloud). This JSON file can be downloaded from [the SisterDistrict Data and Research folder](https://drive.google.com/open?id=0B4PfgEkSv47QSy1qLUdIdEF0VTQ) in Google Drive. *Once downloaded please keep it secure.*
 
-**Usage (from db-scripts directory):**
-
-```
-python3 voting_rights/voting_rights.py
-
-mysql -u root SisterDistrict_dev < voting_rights/voting_rights.sql
-```
-
-### voting_rights/voting_rights.py
-Inserts the results of the last 10 presidential elections.
-
-**Usage:**
-
-```
-mysql -u root SisterDistrict_dev < pres_races/pres_races.sql
-```
-
+For the production database, use dbname `SisterDistrict`.

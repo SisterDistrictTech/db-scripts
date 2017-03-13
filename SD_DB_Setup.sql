@@ -1,12 +1,3 @@
-drop database if exists SisterDistrict_dev;
-#drop database if exists SisterDistrict;
-
-create database SisterDistrict_dev;
-#create database SisterDistrict;
-
-use SisterDistrict_dev;
-#use SisterDistrict;
-
 CREATE TABLE national_districts
 	(id int(11) NOT NULL auto_increment primary key,
     state varchar(2) NOT NULL,
