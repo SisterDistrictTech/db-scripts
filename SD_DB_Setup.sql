@@ -44,9 +44,9 @@ delimiter ;
 create table national_district_metrics
 	(id int(11) not null auto_increment primary key,
     district_id int(11) not null,
-    index_type enum('Cook Code', 'Swing Left Index') not null,
-    index_value varchar(20),
-    index_date datetime,
+    metric_type enum('Cook Code', 'Swing Left Index') not null,
+    metric_value varchar(20),
+    metric_date datetime,
 	date_modified timestamp not null default current_timestamp(),
     user_modified varchar(20),
     foreign key fk_district_id(district_id) references national_districts(id));
