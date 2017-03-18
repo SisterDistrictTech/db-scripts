@@ -40,6 +40,23 @@ begin
 	set new.user_added = current_user();
 end;;
 delimiter ;
+
+create table national_district_metrics
+	(id int(11) not null auto_increment primary key,
+    district_id int(11) not null,
+    metric_type enum('Cook Code', 'Swing Left Index') not null,
+    metric_value varchar(20),
+    metric_date datetime,
+	date_modified timestamp not null default current_timestamp(),
+    user_modified varchar(20),
+    foreign key fk_district_id(district_id) references national_districts(id));
+    
+DELIMITER ;;
+CREATE TRIGGER metrics_insert BEFORE INSERT ON national_district_metrics FOR EACH ROW
+BEGIN
+    set new.user_modified = current_user();
+END;;
+DELIMITER ;
     
 create table national_district_races
 	(id int(11) not null auto_increment primary key,
@@ -66,11 +83,9 @@ create table national_district_races
     year_flipped int(4),
 	flip_reason enum('A', 'B', 'C'),
     money_to_flip text,
-	cook_code int(2),
 	sw_margin float,
 	sw_total_votes int(11),
-	sl_swing_index int(2),
-    rnc_targeted bool,
+	rnc_targeted bool,
     foreign key fk_district_id(district_id) references national_districts(id));
     
 DELIMITER ;;
@@ -171,18 +186,9 @@ create table district_demo
 	(id int(11) NOT NULL auto_increment primary key,
     source_year int(4) not null,
     district_id int(11) not null,
-    median_income float,
-    am_indian_pct float,
-	asian_pct float,
-	black_pct float,
-	latinx_pct float,
-	islander_pct float,
-	white_pct float,
-	other_pct float,
-	total_pop float,
-	unemployed_pct float,
-	medicaid_exp bool,
-	date_modified timestamp not null default current_timestamp(),
+    demo_type enum('median_income', 'am_ind_pct', 'am_ind_18_pct', 'asian_pct', 'asian_18_pct', 'black_pct', 'black_18_pct', 'latinx_pct', 'latinx_18_pct', 'islander_pct', 'islander_18_pct', 'other_pct', 'other_18_pct', 'white_pct', 'white_18_pct', 'total_pop', 'unemployed_pct', 'pub_asst_pct', 'medicaid_exp_bool') not null, 
+    demo_value float,
+   	date_modified timestamp not null default current_timestamp(),
     user_modified varchar(20) not null,
     foreign key fk_district_id(district_id) references national_districts(id));
     
