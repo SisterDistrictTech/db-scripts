@@ -1,7 +1,7 @@
 CREATE TABLE national_districts
 	(id int(11) NOT NULL auto_increment primary key,
     state varchar(2) NOT NULL,
-    district int(3) NOT NULL,
+    district int(3),
     district_abbr varchar(6) NOT NULL,
     date_modified TIMESTAMP not null default current_timestamp(),
     user_modified varchar(20) not null
