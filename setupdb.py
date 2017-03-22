@@ -7,8 +7,8 @@ from sdlib.pres_races import PresRaces
 from sdlib.voting_rights import VotingRights
 
 
-def main(dbname, dbuser, dbpasswd, googcreds):
-    createdb(dbname, dbuser, dbpasswd)
+def main(dbname, dbuser, dbpasswd, googcreds, dbhost=None, dbport=None):
+    createdb(dbname, dbuser, dbpasswd, dbhost=dbhost, dbport=dbport)
 
     db = MySQLdb.connect(db=dbname, user=dbuser, passwd=dbpasswd, charset='utf8')
     cur = db.cursor()
@@ -20,13 +20,18 @@ def main(dbname, dbuser, dbpasswd, googcreds):
     db.commit()
 
 
-def createdb(dbname, dbuser, dbpasswd):
+def createdb(dbname, dbuser, dbpasswd, dbhost=None, dbport=None):
     mysql_args = ['-u', dbuser]
     if dbpasswd:
         # The -p argument needs to have the password attached to it or
         # else mysql and mysqladmin will try to prompt for the
         # password interactively.
         mysql_args.append('-p'+dbpasswd)
+
+    if dbhost:
+        mysql_args.extend(['-h', dbhost])
+    if dbport:
+        mysql_args.extend(['-P', str(dbport)])
 
     # Delete the database first, if it exists. Failures here are ignored.
     subprocess.run(['mysqladmin'] + mysql_args + ['-f', 'drop', dbname])
@@ -49,5 +54,10 @@ if __name__ == '__main__':
                         help='MySQL password for the MySQL user.')
     parser.add_argument('--googcreds',
                         help='Path to JSON file containing Google service-account credentials.')
+    parser.add_argument('--dbhost',
+                        help='MySQL server host.')
+    parser.add_argument('--dbport', type=int,
+                        help='MySQL server port.')
     args = parser.parse_args()
-    main(args.dbname, args.dbuser, args.dbpasswd, args.googcreds)
+    main(args.dbname, args.dbuser, args.dbpasswd, args.googcreds,
+         dbhost=args.dbhost, dbport=args.dbport)
