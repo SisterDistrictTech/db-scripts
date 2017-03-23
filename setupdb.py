@@ -1,5 +1,6 @@
 import argparse
 import MySQLdb
+import platform
 import subprocess
 
 from sdlib.national_districts import NationalDistricts
@@ -33,15 +34,17 @@ def createdb(dbname, dbuser, dbpasswd, dbhost=None, dbport=None):
     if dbport:
         mysql_args.extend(['-P', str(dbport)])
 
+    shell = platform.system() == 'Windows'
+
     # Delete the database first, if it exists. Failures here are ignored.
-    subprocess.run(['mysqladmin'] + mysql_args + ['-f', 'drop', dbname])
+    subprocess.run(['mysqladmin'] + mysql_args + ['-f', 'drop', dbname], shell=shell)
 
     # Create the database.
-    subprocess.run(['mysqladmin'] + mysql_args + ['create', dbname], check=True)
+    subprocess.run(['mysqladmin'] + mysql_args + ['create', dbname], shell=shell, check=True)
 
     # Set up the database schema.
     with open('SD_DB_Setup.sql') as sql:
-        subprocess.run(['mysql'] + mysql_args + [dbname], stdin=sql, check=True)
+        subprocess.run(['mysql'] + mysql_args + [dbname], stdin=sql, shell=shell, check=True)
 
 
 if __name__ == '__main__':
