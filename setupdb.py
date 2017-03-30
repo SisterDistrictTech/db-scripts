@@ -5,6 +5,7 @@ import subprocess
 from sdlib.national_districts import NationalDistricts
 from sdlib.pres_races import PresRaces
 from sdlib.voting_rights import VotingRights
+from sdlib.pres_dist_voting import PresDistVoting
 
 
 def main(dbname, dbuser, dbpasswd, googcreds):
@@ -16,6 +17,8 @@ def main(dbname, dbuser, dbpasswd, googcreds):
     NationalDistricts.populate(cur, reset=True)
     VotingRights.populate(cur, googcreds, reset=True)
     PresRaces.populate(cur, reset=True)
+    PresDistVoting.populate(cur, googcreds, reset=True)
+
 
     db.commit()
 

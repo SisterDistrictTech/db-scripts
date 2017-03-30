@@ -284,7 +284,6 @@ create table pres_dist_voting
 	(id int(11) NOT NULL auto_increment primary key,
 	district_id int(11) not null,
     pres_race_id int(11) not null,
-    voting_pct float,
     pres_dem_pct float,
     pres_rep_pct float,
     pres_dem_num float,
@@ -439,4 +438,25 @@ BEGIN
     set new.user_modified = current_user();
 END;;
 DELIMITER ;
-    
+
+
+DELIMITER ;;
+CREATE PROCEDURE insert_into_pres_dist_voting(IN year_in int(4),
+                                              IN district_abbr_in varchar(6),
+                                              IN pres_dem_pct_in float,
+                                              IN pres_rep_pct_in float,
+                                              IN pres_dem_num_in float,
+                                              IN pres_rep_num_in float)
+
+BEGIN
+
+  SET @district_id_fk = (SELECT id FROM national_districts WHERE district_abbr = district_abbr_in);
+  SET @pres_race_id_fk = (SELECT id FROM pres_races WHERE race_year = year_in);
+
+  INSERT INTO pres_dist_voting(district_id, pres_race_id, pres_dem_pct,
+                               pres_rep_pct, pres_dem_num, pres_rep_num)
+    VALUES (@district_id_fk, @pres_race_id_fk, pres_dem_pct_in,
+         pres_rep_pct_in, pres_dem_num_in, pres_rep_num_in);
+
+END;;
+DELIMITER ;
